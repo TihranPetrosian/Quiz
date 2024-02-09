@@ -48,12 +48,17 @@ class GameWonFragment : Fragment() {
             findNavController().navigate(GameWonFragmentDirections.actionGameWonFragmentToGameFragment2())
         }
 
-        binding.gameWonToolbar.setupWithNavController(findNavController())
+        (requireActivity() as MainActivity).toolbar.inflateMenu(R.menu.winner_menu)
 
-        binding.gameWonToolbar.menu.findItem(R.id.share).setOnMenuItemClickListener {
+        (requireActivity() as MainActivity).toolbar.menu.findItem(R.id.share).setOnMenuItemClickListener {
             shareSuccess()
             true
         }
+    }
+
+    override fun onDestroyView() {
+        (requireActivity() as MainActivity).toolbar.menu.clear()
+        super.onDestroyView()
     }
 
     private fun getShareIntent(): Intent {

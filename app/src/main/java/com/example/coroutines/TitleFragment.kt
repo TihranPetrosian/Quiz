@@ -1,5 +1,6 @@
 package com.example.coroutines
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -33,14 +34,5 @@ class TitleFragment : Fragment() {
         binding.playButton.setOnClickListener {
             findNavController().navigate(TitleFragmentDirections.actionTitleFragmentToGameFragment())
         }
-        binding.toolbar.setupWithNavController(findNavController())
-
-        binding.toolbar.menu.findItem(R.id.aboutFragment).setOnMenuItemClickListener {
-            findNavController().navigate(R.id.action_titleFragment_to_aboutFragment)
-            true
-        }
-
     }
-
-
 }

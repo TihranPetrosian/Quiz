@@ -17,32 +17,60 @@
 package com.example.coroutines
 
 import android.os.Bundle
-import android.widget.Toolbar
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.example.coroutines.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val drawerLayout by lazy { binding.drawerLayout }
-
+    internal val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.muNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, binding.drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
-
+        navController.addOnDestinationChangedListener{ controller, destination, arguments ->
+            when (destination.id) {
+                R.id.titleFragment -> {
+                    toolbar.setNavigationOnClickListener {
+                        binding.drawerLayout.open()
+                    }
+                }
+                else -> toolbar.setNavigationOnClickListener { controller.navigateUp() }
+            }
         }
+
+        binding.navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.aboutFragment -> {
+                    findNavController(R.id.muNavHostFragment).navigate(R.id.action_titleFragment_to_aboutFragment)
+                }
+
+                R.id.rulesFragment -> {
+                    findNavController(R.id.muNavHostFragment).navigate(R.id.action_titleFragment_to_rulesFragment)
+                }
+            }
+            binding.drawerLayout.close()
+            true
+        }
+
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.muNavHostFragment)
-        return NavigationUI.navigateUp(navController, drawerLayout)
+        return navController.navigateUp()
     }
-
 }

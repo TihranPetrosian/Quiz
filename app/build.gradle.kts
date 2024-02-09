@@ -60,4 +60,5 @@ dependencies {
     implementation ("androidx.navigation:navigation-ui-ktx:2.3.5")
     implementation("com.google.android.material:material:1.8.0")
 
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
